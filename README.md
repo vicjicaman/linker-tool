@@ -1,5 +1,5 @@
 # linker-tool
-Connect to Kubernetes service, ingress and nodes ports and replace services with local ports.
+A team focused tool to connect to Kubernetes service, ingress and nodes ports and replace services with local ports.
 
 # Features
 ### Expose/Forward
@@ -23,10 +23,10 @@ Connect to Kubernetes service, ingress and nodes ports and replace services with
 - Dedicate a pivot server per team or functionality like copy files
 - Pivot server could could be intranet or in the cloud
 
-# Tool in action examples
+# Tool in action
  - <a href="https://user-images.githubusercontent.com/36018976/71224776-b009cf00-22d6-11ea-862c-7716a3e75fc2.gif" target="_blank">Forward the kubernetes dashboard.</a>
  - <a href="https://user-images.githubusercontent.com/36018976/71224784-b6984680-22d6-11ea-8f85-86e9ec70619d.gif" target="_blank">Forward a cluster node port.</a>
- - <a href="https://user-images.githubusercontent.com/36018976/71224782-b304bf80-22d6-11ea-8fb2-88b2939d944a.gif" target="_blank">Forward an ingress port (automatic /etc/hosts update).</a>
+ - <a href="https://user-images.githubusercontent.com/36018976/71224782-b304bf80-22d6-11ea-8fb2-88b2939d944a.gif" target="_blank">Forward an ingress port.</a>(automatic /etc/hosts update)
  - <a href="https://user-images.githubusercontent.com/36018976/71224767-aa13ee00-22d6-11ea-9ffa-22b79fc76c87.gif" target="_blank">Expose a local port to a cluster service.</a>(Linker exposed service)
   - <a href="https://user-images.githubusercontent.com/36018976/71224771-ada77500-22d6-11ea-9561-33a87d258e7f.gif" target="_blank">Use a linker exposed service to replace any cluster service temporaly.</a>
   - <a href="https://user-images.githubusercontent.com/36018976/71224783-b4ce8300-22d6-11ea-8343-16baf4c6b9b7.gif" target="_blank">Forward any service to the same host and port than in the cluster or directly to localhost.</a>
@@ -36,8 +36,32 @@ Connect to Kubernetes service, ingress and nodes ports and replace services with
   <img src="https://user-images.githubusercontent.com/36018976/71224786-b7c97380-22d6-11ea-8337-16a01b012b88.gif">
 </p>
 
-
+# How it works? 
+ The linker main actors are 
+ - **Cluster handler:** This is a service running on the cluster in charge of forward a ssh port to a pivot server, you can have multiple cluster handler pods and pivot servers to have a nice and stable tunnels across multiple teams and dev workloads.
+ - **Pivot server:** This is another server that acts as a common connectivity point bettween the cluster and the linkers, it is in charge of expose the ssh connection from the cluster handler to the linker users, the pivot can be an static IP, intranet IP or hostname, as long as the linkers and the cluster can reach the pivot.
+ - **Linkers:** Those developers whose want to forward the cluster services to their localhost, share their local services with the cluster or other linkers, the **linker-tool** is in charge of the local linker functionality previously listed (There could be more elaborated cases where a cluster is a linker to another cluster)
+ - **Linker account:** Keep track of the pivots, the cluster and their linkers, generate the cluster and pivot connector scripts and their tokens, **there is no need to connect to the linker account once the tokens and scripts are generated**, you could be completly offline or in a isolated network and the cluster/pivot/linker will work, the account is only for script and token generation to help with the auth and coordination of cluster, pivots and linkers. 
 
 # Requeriments
- - node v10.13.0
+ - node   v10.13
+ - docker v19.03
+ - docker-compose v1.20
  
+# Getting started
+
+ - Download the latest linker-tool release and run the start.sh script
+```bash
+curl -fsSL https://github.com/vicjicaman/linker-tool/archive/v1.70.0-master.tar.gz | tar -xzv
+./start.sh, 
+```
+ - Get a linker account <a href="https://linker.repoflow.com/auth" target="_blank">Repoflow linker accounts.</a>
+
+# Why do I need an account
+ - The linker generate tokens to help with the coordination of the cluster services, the pivot servers and to keep track of the user that are allowed to a given cluster
+ - A ssh key is generated inside your cluster handler as a secret, is up to you handle and share the keys with the allowed linkers, **we don't store any key to any cluster, node, pivot server**. 
+ 
+
+Checkout our other tools and resources focused on increase the developers productivity working with multiple services and kubernetes.
+- repoflow-tool: A tool focused on the development workflow with kubernetes and multiple repositories.
+- microservices: A blog about it's own development and evolution running on kubernetes.
