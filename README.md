@@ -37,11 +37,11 @@ A team focused tool to connect to Kubernetes service, ingress and nodes ports an
 </p>
 
 # How it works? 
- The linker main actors are 
+ 
  - **Cluster handler:** This is a service running on the cluster in charge of forward a ssh port to a pivot server, you can have multiple cluster handler pods and pivot servers to have a nice and stable tunnels across multiple teams and dev workloads.
  - **Pivot server:** This is another server that acts as a common connectivity point bettween the cluster and the linkers, it is in charge of expose the ssh connection from the cluster handler to the linker users, the pivot can be an static IP, intranet IP or hostname, as long as the linkers and the cluster can reach the pivot.
  - **Linkers:** Those developers whose want to forward the cluster services to their localhost, share their local services with the cluster or other linkers, the **linker-tool** is in charge of the local linker functionality previously listed (There could be more elaborated cases where a cluster is a linker to another cluster)
- - **Linker account:** Keep track of the pivots, the cluster and their linkers, generate the cluster and pivot connector scripts and their tokens, **there is no need to connect to the linker account once the tokens and scripts are generated**, you could be completly offline or in a isolated network and the cluster/pivot/linker will work, the account is only for script and token generation to help with the auth and coordination of cluster, pivots and linkers. 
+ - **Linker account:** Keep track of the pivots, the cluster and their linkers, generate the cluster and pivot connector scripts and their tokens, **there is no need to connect to the linker account once the tokens and scripts are generated**, you could be completly offline or in a isolated network and the cluster/pivot/linker will work, the account is only for script and token generation to help with the auth and coordination of cluster, pivots and linkers, the tokens are an extra security layer for the cluster links. 
 
 # Requeriments
  - node   v10.13
@@ -51,7 +51,7 @@ A team focused tool to connect to Kubernetes service, ingress and nodes ports an
 # Getting started
 
  - Get a linker account <a href="https://linker.repoflow.com/auth" target="_blank">Repoflow linker accounts.</a>
- - Create the pivot and the cluster
+ - Create the pivot and the cluster handler
  - Configure and run the pivot docker-compose and create the namespace cluster handler
  
  <p align="center">
@@ -68,10 +68,27 @@ curl -fsSL https://github.com/vicjicaman/linker-tool/archive/v1.70.0-master.tar.
   <img src="https://user-images.githubusercontent.com/36018976/71369322-ab7d3900-25aa-11ea-8968-ab64188419e1.gif">
 </p>
  
+ 
+## FAQ
 
-# Why do I need an account
- - The linker generate tokens to help with the coordination of the cluster services, the pivot servers and to keep track of the user that are allowed to a given cluster
- - A ssh key is generated inside your cluster handler as a secret, is up to you handle and share the keys with the allowed linkers, **we don't store any key to any cluster, node, pivot server**. 
+<details>
+<summary><b>Where are the ssh keys stored and shared?</b></summary>
+A ssh key is generated inside your cluster handler as a secret, is up to you handle and share the keys with the allowed linkers, **we don't store/access any key to any cluster, node, pivot server**
+</details>
+<br>
+
+<details>
+<summary><b>Why do I need an account?</b></summary>
+The linker generate tokens to help with the coordination of the cluster services, the pivot servers and handle the relation of the user that are allowed to a given cluster handler.
+To connect to a cluster handler you will need the ssh keys and the linker token, an authorized user would need to have both.
+</details>
+<br>
+
+<details>
+<summary><b>Do I need to keep a connection to the linker account service to use this tool?</b></summary>
+No, you only need to contact the remote service during the login and token generation, the tokens are an extra security layer for the cluster links. 
+</details>
+<br>
  
 
 Checkout our other tools and resources focused on increase the developers productivity working with multiple services and kubernetes.
