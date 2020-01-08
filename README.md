@@ -60,7 +60,7 @@ A team focused tool to connect to Kubernetes service, ingress and nodes ports an
 
  - Download the latest linker-tool release and run the start.sh script
 ```bash
-curl -fsSL https://github.com/vicjicaman/linker-tool/archive/v1.70.0-master.tar.gz | tar -xzv
+curl -fsSL https://github.com/vicjicaman/linker-tool/archive/v1.70.1-master.tar.gz | tar -xzv
 ./start.sh
 ```
 
