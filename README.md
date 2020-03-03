@@ -60,6 +60,8 @@ curl -fsSL https://github.com/vicjicaman/linker-tool/archive/v1.70.1-master.tar.
   <img src="https://user-images.githubusercontent.com/36018976/71369322-ab7d3900-25aa-11ea-8968-ab64188419e1.gif">
 </p>
 
+## We are merging this tool with the core of the tunnel-tool to remove the need to get an user account and token. this will be completly selfhosted on your cluster and localhost, but you can still get an account in the meantime.
+
  - Get a linker user <a href="https://linker.repoflow.com/auth" target="_blank">Repoflow linker login.</a>
  - Create the pivot and the cluster handler
  - Configure and run the pivot docker-compose and create the namespace cluster handler
